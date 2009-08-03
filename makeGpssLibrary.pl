@@ -12,6 +12,7 @@ use File::Basename;
 use File::Spec::Functions qw(rel2abs);
 use Getopt::Long;
 use List::Util 'shuffle';
+use FindBin;
 #$|=1;
 
 #############################################################
@@ -30,18 +31,22 @@ GetOptions("m!" => \$INCLUDE_METALS,
     );
 
 #############################################################
-# Set library
+# Set GPSS-Library
 #############################################################
 if($ENV{'HOST'} eq 'tbinkowski4') {
     $LIBRARY = ($LIBRARY) ? $LIBRARY : "/Volumes/bioxshared.bio.anl.gov/sling/Gpss/";
 } else {
-    $LIBRARY = ($LIBRARY) ? $LIBRARY : "/home/abinkows/Gpss/";
+    $LIBRARY = ($LIBRARY) ? $LIBRARY : "/home/abinkows/Gpss/Gpss-Library/";
 }
 
 die("Library $LIBRARY does not exist.\n$USAGE\n") if (!-e $LIBRARY);
 die("\nUsage:\t$USAGE\n") if ($HELP);
 
-my $OUTFILE="gpss.$DATE.$HOST";
+#############################################################
+# Set Paths
+#############################################################
+my $LIBRARY_PATH="$FindBin::Bin/Library/";
+my $OUTFILE="$LIBRARY_PATH/gpss.$DATE.$HOST";
 $OUTFILE.=".unique" if $UNIQUE;
 $OUTFILE.=".db";
 
