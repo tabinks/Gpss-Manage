@@ -13,22 +13,29 @@ use File::Spec::Functions qw(rel2abs);
 use Getopt::Long;
 use List::Util 'shuffle';
 use FindBin;
+
+use lib '/home/abinkows/';
+use PetaPerl::Environment;
+use PetaPerl::Log;
 #$|=1;
+
+#############################################################
+# Scene
+#############################################################
+my $SYSTEM  = System();
+my $DATE    = PetaPerl::Environment::DateSimple();
+PetaPerl::Log::About(NULL,@ARGV);
 
 #############################################################
 # Command line arguments
 #############################################################
-my $DATE=`date +%Y%m%d`;chomp($DATE);
 my $USAGE="perl makeSurfaceScreenLibrary.pl my_dir_path/ [-u uniquify] [-s shuffle] [-h help]\n";
-my $HOST=$ENV{'HOST'};
-
-my %seen={};
 GetOptions("m!" => \$INCLUDE_METALS,
 	   "u!" => \$UNIQUE,
 	   "h!" => \$HELP,
 	   "library=s" => \$LIBRARY,
 	   "prefix=s" => \$PREFIX
-    );
+	   );
 
 #############################################################
 # Set GPSS-Library
@@ -38,7 +45,6 @@ if($ENV{'HOST'} eq 'tbinkowski4') {
 } else {
     $LIBRARY = ($LIBRARY) ? $LIBRARY : "/home/abinkows/Gpss/Gpss-Library/";
 }
-
 die("Library $LIBRARY does not exist.\n$USAGE\n") if (!-e $LIBRARY);
 die("\nUsage:\t$USAGE\n") if ($HELP);
 
@@ -46,14 +52,16 @@ die("\nUsage:\t$USAGE\n") if ($HELP);
 # Set Paths
 #############################################################
 my $LIBRARY_PATH="$FindBin::Bin/Library/";
-my $OUTFILE="$LIBRARY_PATH/gpss.$DATE.$HOST";
+my $OUTFILE="$LIBRARY_PATH/gpss.$DATE.$SYSTEM";
 $OUTFILE.=".unique" if $UNIQUE;
+open(ATOMLESS,"> $OUTFILE.bad") or die("Couldn't open $OUTFILE.bad");
 $OUTFILE.=".db";
-
-###
 open(DB,">$OUTFILE") or die("Couldn't open $OUTFILE");
-open(ATOMLESS,"> $OUTFILE.bad");
-##
+
+#############################################################
+#
+#############################################################
+my %seen={};
 foreach(glob("$LIBRARY/*")) {
     foreach $file (glob("$_/*gpss")) {
 	($pdb,$het,$hetNumber,$chain)=split(/\./,basename($file));
