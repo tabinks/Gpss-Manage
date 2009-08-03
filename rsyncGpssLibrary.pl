@@ -28,8 +28,8 @@ $ZINC_LIBRARY=($ALT_LIBRARY) ? $ALT_LIBRARY : "/Volumes/bioxshared.bio.anl.gov/s
 ##############################################################
 # Rsync Zinc-Library
 ##############################################################
-my $destinationPath="/home/abinkows/";
-my $sourcePath="/Volumes/bioxshared.bio.anl.gov/sling/Gpss";
+my $destinationPath="/home/abinkows/Gpss/Gpss-Library/";
+my $sourcePath="/Volumes/bioxshared.bio.anl.gov/sling/Gpss/";
 my $arguments="-avz --delete";
 print STDERR "rsync $arguments $sourcePath abinkows\@login6.surveyor.alcf.anl.gov:$destinationPath\n";
 print STDERR "rsync $arguments $sourcePath abinkows\@login6.intrepid.alcf.anl.gov:$destinationPath\n";
