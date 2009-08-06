@@ -33,8 +33,7 @@ my $USAGE="perl makeSurfaceScreenLibrary.pl my_dir_path/ [-u uniquify] [-s shuff
 GetOptions("m!" => \$INCLUDE_METALS,
 	   "u!" => \$UNIQUE,
 	   "h!" => \$HELP,
-	   "library=s" => \$LIBRARY,
-	   "prefix=s" => \$PREFIX
+	   "library=s" => \$LIBRARY
 	   );
 
 #############################################################
